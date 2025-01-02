@@ -1,94 +1,117 @@
+<?php
+// Włączanie raportowania błędów
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+require('db.php'); // Połączenie z bazą danych
+session_start();
+
+$lock_message = ""; // Przechowuje komunikat o blokadzie
+
+if (!$con) {
+    die("Błąd połączenia z bazą danych: " . mysqli_connect_error());
+}
+
+// Kiedy formularz zostanie przesłany
+if (isset($_POST['username'])) {
+    $username = stripslashes($_POST['username']);
+    $username = mysqli_real_escape_string($con, $username);
+    $password = stripslashes($_POST['password']);
+    $password = mysqli_real_escape_string($con, $password);
+
+    // Pobierz dane użytkownika na podstawie username
+    $query = "SELECT password, salt, failed_attempts, last_attempt FROM `users` WHERE username = ?";
+    $stmt = $con->prepare($query);
+
+    if (!$stmt) {
+        die("Błąd przygotowania zapytania: " . $con->error);
+    }
+
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+
+    if ($user) {
+        $failed_attempts = $user['failed_attempts'];
+        $last_attempt = $user['last_attempt'] ? strtotime($user['last_attempt']) : 0;
+        $now = time();
+
+        // Sprawdzenie blokady konta
+        if ($failed_attempts >= 3 && ($now - $last_attempt) < 10) {
+            $lock_message = "Twoje konto zostało zablokowane na 10 sekund z powodu zbyt wielu nieudanych prób logowania.";
+        } else {
+            // Sprawdzenie, czy czas blokady minął
+            if (($now - $last_attempt) >= 10) {
+                // Zerowanie liczby prób po upływie 10 sekund minut
+                $failed_attempts = 0;
+                $stmt = $con->prepare("UPDATE users SET failed_attempts = 0 WHERE username = ?");
+                $stmt->bind_param("s", $username);
+                $stmt->execute();
+            }
+
+            // Połączenie hasła z solą i sprawdzenie
+            $salt = $user['salt'];
+            $password_with_salt = $salt . $password;
+
+            if (password_verify($password_with_salt, $user['password'])) {
+                // Zresetowanie liczby prób przy udanym logowaniu
+                $stmt = $con->prepare("UPDATE users SET failed_attempts = 0 WHERE username = ?");
+                $stmt->bind_param("s", $username);
+                $stmt->execute();
+
+                // Logowanie udane
+                $_SESSION['username'] = $username;
+                unset($_SESSION['csrf_token']);
+                header("Location: index.php");
+                exit();
+            } else {
+                // Aktualizacja prób logowania
+                $failed_attempts++;
+                $stmt = $con->prepare("UPDATE users SET failed_attempts = ?, last_attempt = NOW() WHERE username = ?");
+                $stmt->bind_param("is", $failed_attempts, $username);
+                $stmt->execute();
+
+                $lock_message = "Niepoprawne hasło. Próba: $failed_attempts z 3.";
+            }
+        }
+    } else {
+        $lock_message = "Nie znaleziono użytkownika!";
+    }
+
+}
+?>
+
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8" />
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <title>Sombrerro | Login </title>
+    <title>Sombrerro | Login</title>
     <link rel="stylesheet" href="../zasoby/css/login.css" />
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
 <body>
-    <?php
-    require('db.php');
-    session_start();
-    // Kiedy formularz zostanie przesłany
-    if (isset($_POST['username'])) {
-        $username = stripslashes($_POST['username']);
-        $username = mysqli_real_escape_string($con, $username);
-        $password = stripslashes($_POST['password']);
-        $password = mysqli_real_escape_string($con, $password);
+    <form class="form" method="post" name="login">
+        <center>
+            <img src="../zasoby/zdjecia/logo.png" alt="" class="img img-fluid">
+        </center>
+        <hr />
+        <h1 class="login-title">Logowanie</h1>
 
-        // Pobierz dane użytkownika na podstawie username
-        $query = "SELECT * FROM `users` WHERE username='$username'";
-        $result = mysqli_query($con, $query);
-        $user = mysqli_fetch_assoc($result);
-
-        // Sprawdź poprawność hasła
-        if ($user && password_verify($password, $user['password'])) {
-            // Zalogowanie - ustawienie sesji
-            $_SESSION['username'] = $username;
-            header("Location: index.php");
-            exit();
-        } else {
-            // Błąd logowania
-            echo "<div class='form'>
-                <h3>Niepoprawny Login/Hasło.</h3><br/>
-                <p class='link'>Jeśli masz już konto kliknij <a href='login.php'>tutaj</a></p>
-              </div>";
-        }
-    } else {
-
-        ?>
-        <form class="form" method="post" name="login">
-            <center>
-                <img src="../zasoby/zdjecia/logo.png" alt="" class="img img-fluid">
-            </center>
-            <hr />
-            <h1 class="login-title">Logowanie</h1>
-            <input type="text" class="login-input" name="username" placeholder="Login" autofocus="true" />
-            <input type="password" class="login-input" name="password" placeholder="Hasło" />
-            <input type="submit" value="Zaloguj się" name="submit" class="login-button" />
-            <p class="link">Nie masz jeszcze konta? <a href="registration.php">Zarejestruj się!</a></p>
-            <hr />
-
-            <div id="g_id_onload" data-client_id="838321752460-6ah497tdpkbekj7lfj5so48suaqhu1e7.apps.googleusercontent.com"
-                data-context="signin" data-ux_mode="popup" data-login_uri="https://kapetanncoffeeshop.infinityfreeapp.com"
-                data-auto_prompt="false">
+        <?php if (!empty($lock_message)): ?>
+            <div class="error-message" style="color:red; font-weight:bold; margin-bottom:10px;">
+                <?= htmlspecialchars($lock_message) ?>
             </div>
+        <?php endif; ?>
 
-            <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
-                data-text="signin_with" data-size="large" data-logo_alignment="center" data-callback="onSignIn">
-            </div>
-        </form>
-        <?php
-    }
-    ?>
+        <input type="text" class="login-input" name="username" placeholder="Login" autofocus="true" />
+        <input type="password" class="login-input" name="password" placeholder="Hasło" />
+        <input type="submit" value="Zaloguj się" name="submit" class="login-button" />
+        <p class="link">Nie masz jeszcze konta? <a href="registration.php">Zarejestruj się!</a></p>
+        <p class="link">Nie pamiętasz hasła? <a href="forgot_password.php">Resetuj hasło</a></p>
 
-    <script src="js/script.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    <script>
-        function onSignIn(googleUser) {
-            // Get the user ID token
-            var id_token = googleUser.getAuthResponse().id_token;
-
-            // Send the token to the server using AJAX
-            $.ajax({
-                type: 'POST',
-                url: 'set_session.php',
-                data: { id_token: id_token },
-                success: function (response) {
-                    // Redirect to the index.php page
-                    window.location.href = 'index.php';
-                },
-                error: function (xhr, status, error) {
-                    console.log(xhr.responseText);
-                }
-            });
-        }
-    </script>
+    </form>
 </body>
 
 </html>

@@ -1,15 +1,67 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
 
+/* Sekcja ogólnych zmiennych w :root */
 :root {
-    --main-color: #9F5C44;
-    --second-color: #64342C;
-    --third-color: #644C2C;
-    --fourth-color: #392414;
-    --fifth-color: #1F232C;
-    --sixth-color: #e7a891;
-    --black: #13131a;
-    --bg: #000000;
-    --border: .1rem solid rgba(255,255,255,.3);
+    --main-color: #ff6f61;          /* Akcent */
+    --second-color: #b86550;        /* Ciemniejszy brąz */
+    --third-color: #644C2C;         /* Brązowy */
+    --fourth-color: #392414;        /* Bardzo ciemny brąz */
+    --fifth-color: #1F232C;         /* Ciemny granat */
+    --sixth-color: #e7a891;         /* Beżowy akcent */
+    --black: #13131a;               /* Czarny */
+    --bg: #ffffff;                  /* Jasne tło */
+    --text-color: #000000;           /* Tekst czarny */
+    --header-bg: linear-gradient(to right, #4e342e, #6d4c41); /* Tło nagłówka */
+    --header-text: #ffffff;         /* Kolor tekstu nagłówka w jasnym motywie */
+    --header-icon: #ffffff;         /* Ikony nagłówka w jasnym motywie */
+    --border: .1rem solid rgba(0, 0, 0, .3); /* Obramowanie */
+    --product-title-color: #000000;
+}
+
+/* Ciemny motyw */
+body.dark-mode {
+    --bg: #333333;                /* Tło w ciemnym motywie */
+    --text-color: #e7e7e7;         /* Jaśniejszy tekst w ciemnym motywie */
+    --main-color: #9F5C44;         /* Akcent w ciemnym motywie */
+    --second-color: #64342C;       /* Ciemniejszy brąz w ciemnym motywie */
+    --fifth-color: #222222;        /* Ciemny granat w ciemnym motywie */
+    --header-bg: linear-gradient(to right, #2c1a13, #3e2c1f); /* Tło nagłówka w ciemnym motywie */
+    --header-text: #ffffff;        /* Tekst nagłówka w ciemnym motywie */
+    --header-icon: #ffffff;        /* Ikony nagłówka w ciemnym motywie */
+    --product-title-color: #ffffff;
+}
+
+
+/* Tło w całym body */
+body {
+    background-color: var(--bg);  /* Użycie zmiennej --bg do tła */
+    color: var(--text-color);     /* Kolor tekstu */
+    transition: all 0.3s ease;    /* Płynne przejście przy zmianie motywu */
+}
+
+#theme-toggle {
+    font-size: 2rem;
+    cursor: pointer;
+    margin-left: 1.5rem;
+    color: var(--text-color);
+}
+
+/* Sekcje */
+.review .box-container .box, .contact .row, .footer {
+    background-color: var(--bg);
+    color: var(--text-color);
+}
+
+body.dark-mode .review .box-container .box {
+    background-color: var(--fifth-color);
+}
+
+body.dark-mode .contact .row {
+    background-color: var(--fifth-color);
+}
+
+body.dark-mode .footer {
+    background-color: var(--fourth-color);
 }
 
 * {
@@ -44,9 +96,6 @@ html::-webkit-scrollbar-thumb{
     border-radius: 5rem;
 }
 
-body {
-    background-color: var(--bg);
-}
 
 section {
     padding: 2rem 7%;
@@ -54,16 +103,13 @@ section {
 
 
 /* HEADER SECTION */
-
-
-
 .header {
-    background-color: var(--bg);
+    background: var(--header-bg); /* Tło nagłówka z gradientem */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtelny cień */
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1.5rem 7%;
-    border-bottom: var(--border);
     position: fixed;
     top: 0;
     left: 0;
@@ -76,26 +122,27 @@ section {
     height: 100px;
 }
 
+/* Linki w nawigacji */
 .header .navbar a {
     margin: 0 1rem;
     font-size: 1.6rem;
-    color: #fff;
+    color: var(--header-text); /* Kolor tekstu nagłówka */
 }
 
-.header .navbar a:hover{
+.header .navbar a:hover {
     color: var(--main-color);
     border-bottom: .1rem solid var(--main-color);
     padding-bottom: .5rem;
 }
 
 .header .icons div {
-    color: #fff;
+    color: var(--header-icon); /* Kolor ikon nagłówka */
     cursor: pointer;
     font-size: 2.5rem;
     margin-left: 2rem;
 }
 
-.header .icons div:hover{
+.header .icons div:hover {
     color: var(--main-color);
 }
 
@@ -153,6 +200,20 @@ section {
 .header .cart.active {
     right: 0;
 }
+
+html {
+    scroll-behavior: smooth; /* Płynne przewijanie */
+}
+
+
+mark {
+    background-color: yellow; /* Tło */
+    color: inherit;           /* Zachowaj oryginalny kolor */
+    font-weight: bold;        /* Pogrubienie dla czytelności */
+    padding: 2px 4px;         /* Wyróżnienie */
+    border-radius: 4px;       /* Zaokrąglenie */
+}
+
 
 .header .cart .cart-item {
     position: relative;
@@ -303,32 +364,55 @@ section {
 
 /* HERO SECTION */
 
-
 .home {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    background: url(../zasoby/zdjecia/kawka.png) no-repeat;
+    justify-content: center;
+    background: url('https://jakubsobon.pl/zasoby/zdjecia/tlo.png') no-repeat;
     background-size: cover;
+    background-position: center;
+    text-align: center;
+    position: relative;
 }
 
 .home .content {
     max-width: 60rem;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.7); /* Półprzezroczyste tło */
+    border-radius: 10px;
+    color: #fff; /* Biały kolor tekstu */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7); /* Cień dla głębi */
 }
 
-.home .content h3 {
-    font-size: 6rem;
+.home .content h1 {
+    font-size: 4rem;
     text-transform: uppercase;
-    color: var(--sixth-color);
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9); /* Cień dla większego kontrastu */
 }
 
 .home .content p {
-    font-size: 2rem;
-    font-weight: lighter;
-    line-height: 1.8;
-    padding: 1rem 0;
-    color: #eee;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
 }
+
+.home .content .btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    font-size: 1.6rem;
+    color: #fff;
+    background: #e85d04;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    transition: background 0.3s ease;
+}
+
+.home .content .btn:hover {
+    background: #ff6f00;
+}
+
 
 
 /* ABOUT SECTION */
@@ -433,31 +517,42 @@ section {
 
 /* MENU SECTION */
 
-
 .menu .box-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
-    gap:1.5rem
+    gap: 1.5rem;
 }
 
 .menu .box-container .box {
-    padding: 5rem;
+    padding: 2rem;
     text-align: center;
-    border: var(--border);
+    border: var(--border); /* Obramowanie */
+    background-color: var(--bg); /* Tło dla jasnego motywu */
+    color: var(--text-color);  /* Kolor tekstu */
+    transition: background-color 0.3s ease;  /* Płynne przejście tła */
 }
+
+.menu .box-container .box .product-title {
+    color: var(--product-title-color);  /* Kolor tekstu zmienia się zgodnie z motywem */
+    font-size: 2rem;
+    padding: 1rem 0;
+}
+
+
 
 .menu .box-container .box img {
     height: 10rem;
+    width: auto;
 }
 
 .menu .box-container .box h3 {
-    color: #fff;
+    color: var(--header-text);  /* Kolor tekstu nagłówka */
     font-size: 2rem;
     padding: 1rem 0;
 }
 
 .menu .box-container .box .price {
-    color: #fff;
+    color: var(--main-color);  /* Akcentowy kolor dla ceny */
     font-size: 2.5rem;
     padding: .5rem 0;
 }
@@ -469,11 +564,24 @@ section {
 }
 
 .menu .box-container .box:hover {
-    background-color: #fff;
+    background-color: var(--main-color);  /* Zmiana tła przy najechaniu */
+}
+.menu .box-container .box:hover > * {
+    color: #fff;  /* Kolor tekstu na biały przy najechaniu */
 }
 
-.menu .box-container .box:hover >* {
-    color: var(--black);
+/* Ulepszenia przycisku */
+.menu .box-container .box .btn {
+    background-color: var(--main-color);
+    color: #fff;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.menu .box-container .box .btn:hover {
+    background-color: #333;
 }
 
 /* BLOGS SECTION */
@@ -529,7 +637,7 @@ section {
 .blogs .box-container .box p {
     font-size: 1.6rem;
     line-height: 1.8;
-    color: #ccc;
+    color: var(--main-color);
     padding: 1rem 0;
 }
 
@@ -552,7 +660,7 @@ section {
 .review .box-container .box p {
     font-size: 1.5rem;
     line-height: 1.8;
-    color: #ccc;
+    color: var(--main-color);
     padding: 2rem 0;
 }
 
@@ -845,3 +953,8 @@ section {
         font-size: 50%; 
     }
 }
+
+
+
+
+

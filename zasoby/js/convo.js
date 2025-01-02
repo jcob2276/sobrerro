@@ -104,3 +104,10 @@ $("#textInput").keypress(function (e) {
         getResponse();
     }
 });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    ScrollReveal().reveal('.home .content h3', { delay: 200, origin: 'top', distance: '50px', duration: 800 });
+    ScrollReveal().reveal('.home .content p', { delay: 400, origin: 'bottom', distance: '50px', duration: 800 });
+    ScrollReveal().reveal('.btn-dark', { delay: 600, origin: 'right', distance: '50px', duration: 800 });
+});

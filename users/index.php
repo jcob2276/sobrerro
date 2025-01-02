@@ -30,7 +30,7 @@
  <!-- HEADER SECTION -->
  <header class="header">
             <a href="#" class="logo">
-                <img src="..zasoby/zdjecia/logo.png" class="img-logo" alt="Kawiarria Sombrerro">
+                <img src="../zasoby/zdjecia/logo.png" class="img-logo" alt="Kawiarria Sombrerro">
             </a>
 
             <!-- MAIN MENU FOR SMALLER DEVICES -->
@@ -145,7 +145,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="box">
-                                <img src="zasoby/zdjecia/kawa1.png" alt="" class="product-img">
+                                <img src="../zasoby/zdjecia/kawa1.png" alt="" class="product-img">
                                 <h3 class="product-title">Espresso</h3>
                                 <div class="price">8.00 zł</div>
                                 <a class="btn add-cart" onclick="redirectCart()">Zamów</a>
@@ -153,7 +153,7 @@
                         </div><br />
                         <div class="col-md-4">
                             <div class="box">
-                                <img src="zasoby/zdjecia/kawa3.png" alt="" class="product-img">
+                                <img src="../zasoby/zdjecia/kawa3.png" alt="" class="product-img">
                                 <h3 class="product-title">Cappuccino</h3>
                                 <div class="price">10.00 zł</div>
                                 <a class="btn add-cart" onclick="redirectCart()">Zamów</a>
@@ -161,7 +161,7 @@
                         </div><br />
                         <div class="col-md-4">
                             <div class="box">
-                                <img src="zasoby/zdjecia/kawa4.png" alt="" class="product-img">
+                                <img src="../zasoby/zdjecia/kawa4.png" alt="" class="product-img">
                                 <h3 class="product-title">Latte Macchiato</h3>
                                 <div class="price">12.00 zł</div>
                                 <a class="btn add-cart" onclick="redirectCart()">Zamów</a>
@@ -171,7 +171,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="box">
-                                <img src="zasoby/zdjecia/kawa2.png" alt="" class="product-img">
+                                <img src="../zasoby/zdjecia/kawa2.png" alt="" class="product-img">
                                 <h3 class="product-title">Mocha</h3>
                                 <div class="price">13.00 zł</div>
                                 <a class="btn add-cart" onclick="redirectCart()">Zamów</a>
@@ -179,7 +179,7 @@
                         </div><br />
                         <div class="col-md-4">
                             <div class="box">
-                                <img src="zasoby/zdjecia/kawa5.png" alt="" class="product-img">
+                                <img src="../zasoby/zdjecia/kawa5.png" alt="" class="product-img">
                                 <h3 class="product-title">Caramel Latte</h3>
                                 <div class="price">14.00 zł</div>
                                 <a class="btn add-cart" onclick="redirectCart()">Zamów</a>
@@ -187,7 +187,7 @@
                         </div><br />
                         <div class="col-md-4">
                             <div class="box">
-                                <img src="zasoby/zdjecia/kawa8.png" alt="" class="product-img">
+                                <img src="../zasoby/zdjecia/kawa8.png" alt="" class="product-img">
                                 <h3 class="product-title">Affogato</h3>
                                 <div class="price">15.00 zł</div>
                                 <a class="btn add-cart" onclick="redirectCart()">Zamów</a>
@@ -197,7 +197,7 @@
                     <div class="row row-to-hide">
                         <div class="col-md-4">
                             <div class="box">
-                                <img src="zasoby/zdjecia/kawa7.png" alt="" class="product-img">
+                                <img src="../zasoby/zdjecia/kawa7.png" alt="" class="product-img">
                                 <h3 class="product-title">Nitro Cold Brew</h3>
                                 <div class="price">15.00 zł</div>
                                 <a class="btn add-cart" onclick="redirectCart()">Zamów</a>
@@ -205,7 +205,7 @@
                         </div><br />
                         <div class="col-md-4">
                             <div class="box">
-                                <img src="zasoby/zdjecia/kawa6.png" alt="" class="product-img">
+                                <img src="../zasoby/zdjecia/kawa6.png" alt="" class="product-img">
                                 <h3 class="product-title">Iced Vanilla Latte</h3>
                                 <div class="price">13.00 zł</div>
                                 <a class="btn add-cart" onclick="redirectCart()">Zamów</a>
@@ -213,7 +213,7 @@
                         </div><br />
                         <div class="col-md-4">
                             <div class="box">
-                                <img src="zasoby/zdjecia/kawa12.png" alt="" class="product-img">
+                                <img src="../zasoby/zdjecia/kawa12.png" alt="" class="product-img">
                                 <h3 class="product-title">Turkish Coffee</h3>
                                 <div class="price">12.00 zł</div>
                                 <a class="btn add-cart" onclick="redirectCart()">Zamów</a>
@@ -223,7 +223,7 @@
                     <div class="row row-to-hide">
                         <div class="col-md-4">
                             <div class="box">
-                                <img src="zasoby/zdjecia/kawa9.png" alt="" class="product-img">
+                                <img src="../zasoby/zdjecia/kawa9.png" alt="" class="product-img">
                                 <h3 class="product-title">Flat White</h3>
                                 <div class="price">11.00 zł</div>
                                 <a class="btn add-cart" onclick="redirectCart()">Zamów</a>
@@ -231,7 +231,7 @@
                         </div><br />
                         <div class="col-md-4">
                             <div class="box">
-                                <img src="zasoby/zdjecia/kawa11.png" alt="" class="product-img">
+                                <img src="../zasoby/zdjecia/kawa11.png" alt="" class="product-img">
                                 <h3 class="product-title">Pumpkin Spiced Latte</h3>
                                 <div class="price">14.00 zł</div>
                                 <a class="btn add-cart" onclick="redirectCart()">Zamów</a>
@@ -239,7 +239,7 @@
                         </div><br />
                         <div class="col-md-4">
                             <div class="box">
-                                <img src="zasoby/zdjecia/kawa12.png" alt="" class="product-img">
+                                <img src="../zasoby/zdjecia/kawa12.png" alt="" class="product-img">
                                 <h3 class="product-title">Matcha Latte</h3>
                                 <div class="price">14.00 zł</div>
                                 <a class="btn add-cart" onclick="redirectCart()">Zamów</a>
@@ -263,7 +263,7 @@
                 <div class="col-md-4">
                     <div class="box">
                         <div class="image">
-                            <img src="zasoby/zdjecia/metody.png" alt="">
+                            <img src="../zasoby/zdjecia/metody.png" alt="">
                         </div>
                         <div class="content">
                             <a href="https://swiezopalona.pl/blog/porownanie-roznych-metod-parzenia-kawy-espresso-i-kawiarka" target="_blank" class="title text-decoration-none">Porównanie różnych metod parzenia kawy</a>
@@ -278,7 +278,7 @@
                 <div class="col-md-4">
                     <div class="box">
                         <div class="image">
-                            <img src="zasoby/zdjecia/przyszlosc.png" alt="">
+                            <img src="../zasoby/zdjecia/przyszlosc.png" alt="">
                         </div>
                         <div class="content">
                             <a href="https://www.explosia.blog/ciekawostki-zwiazane-z-kawa/przyszlosc-kawy-wyzwania-i-innowacje-w-swiecie-kawy/" target="_blank" class="title text-decoration-none">Przyszłość kawy: Wyzwania i innowacje w świecie kawy</span>
@@ -293,7 +293,7 @@
                 <div class="col-md-4">
                     <div class="box">
                         <div class="image">
-                            <img src="zasoby/zdjecia/ranking.png" alt="brak">
+                            <img src="../zasoby/zdjecia/ranking.png" alt="brak">
                         </div>
                         <div class="content">
                             <a href="https://www.konesso.pl/RANKING-NAJLEPSZYCH-AUTOMATYCZNYCH-EKSPRESOW-2024-blog-pol-1711007082.html" target="_blank" class="title text-decoration-none">RANKING NAJLEPSZYCH AUTOMATYCZNYCH EKSPRESÓW 2024</a>
@@ -317,11 +317,11 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="box">
-                        <img src="zasoby/zdjecia/quote-img.png" alt="" class="quote">
+                        <img src="../zasoby/zdjecia/quote-img.png" alt="" class="quote">
                         <p>
                             Kawiarnia Sombrerro to moje ulubione miejsce na spotkania z przyjaciółmi. Kawa zawsze idealnie zaparzona, a ciasta są po prostu niebiańskie. Polecam szczególnie ich Latte Macchiato!
                         </p>
-                        <img src="zasoby/zdjecia/awatar.png" alt="" class="user">
+                        <img src="../zasoby/zdjecia/awatar.png" alt="" class="user">
                         <h3>Anna K.</h3>
                         <div class="stars">
                             <i class="fas fa-star"></i>
@@ -334,11 +334,11 @@
                 </div>
                 <div class="col-md-4">
                     <div class="box">
-                        <img src="zasoby/zdjecia/quote-img.png" alt="" class="quote">
+                        <img src="../zasoby/zdjecia/quote-img.png" alt="" class="quote">
                         <p>
                             Cudowna atmosfera i przemiła obsługa! Uwielbiam spędzać tutaj czas, zwłaszcza z filiżanką świeżo mielonej kawy. Polecam Nitro Cold Brew – coś wyjątkowego!
                         </p>
-                        <img src="zasoby/zdjecia/awatar.png" alt="" class="user">
+                        <img src="../zasoby/zdjecia/awatar.png" alt="" class="user">
                         <h3>Marek Z.</h3>
                         <div class="stars">
                             <i class="fas fa-star"></i>
@@ -351,11 +351,11 @@
                 </div>
                 <div class="col-md-4">
                     <div class="box">
-                        <img src="zasoby/zdjecia/quote-img.png" alt="" class="quote">
+                        <img src="../zasoby/zdjecia/quote-img.png" alt="" class="quote">
                         <p>
                             Zawsze, gdy mam chwilę dla siebie, odwiedzam Sombrerro. Wystrój jest przytulny, a kawa pachnie jak w najlepszych kawiarniach we Włoszech. Matcha Latte to mój faworyt!
                         </p>
-                        <img src="zasoby/zdjecia/awatar.png" alt="" class="user">
+                        <img src="../zasoby/zdjecia/awatar.png" alt="" class="user">
                         <h3>Kasia M.</h3>
                         <div class="stars">
                             <i class="fas fa-star"></i>
@@ -399,7 +399,7 @@
 <section class="footer">
     <div class="footer-container">
         <div class="logo">
-            <img src="zasoby/zdjecia/logo.png" class="img"><br />
+            <img src="../zasoby/zdjecia/logo.png" class="img"><br />
             <i class="fas fa-envelope"></i>
             <p>Sombrerro@gmail.com</p><br />
             <i class="fas fa-phone"></i>

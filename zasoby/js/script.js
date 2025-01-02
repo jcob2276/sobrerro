@@ -1,42 +1,240 @@
-// Show Navbar when small screen || Close Cart Items & Search Textbox
-let navbar = document.querySelector('.navbar');
+document.addEventListener('DOMContentLoaded', () => {
+    const navbar = document.querySelector('.navbar');
+    const cartItem = document.querySelector('.cart');
+    const searchForm = document.querySelector('.search-form');
+    const searchBtn = document.querySelector('#search-btn-icon'); // Ikona lupki
+    const searchInput = document.querySelector('#search-box');   // Pole input
 
-document.querySelector('#menu-btn').onclick = () => {
-    navbar.classList.toggle('active');
-    cartItem.classList.remove('active');
-    searchForm.classList.remove('active');
+// Obsługa kliknięcia w lupkę
+if (searchBtn && searchForm && searchInput) {
+    searchBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        searchForm.classList.toggle('active'); // Rozwija lub zwija
+        searchInput.focus();
+    });
 }
 
-// Show Cart Items || Close Navbar & Search Textbox
-let cartItem = document.querySelector('.cart');
-
-document.querySelector('#cart-btn').onclick = () => {
-    cartItem.classList.toggle('active');
-    navbar.classList.remove('active');
-    searchForm.classList.remove('active');
-}
-
-// Show Search Textbox || Close Navbar & Cart Items
-let searchForm = document.querySelector('.search-form');
-
-document.querySelector('#search-btn').onclick = () => {
-    searchForm.classList.toggle('active');
-    navbar.classList.remove('active');
-    cartItem.classList.remove('active');
-}
-
-// Remove Active Icons on Scroll and Close it
-window.onscroll = () => {
-    navbar.classList.remove('active');
-    cartItem.classList.remove('active');
-    searchForm.classList.remove('active');
-}
-
-// Script for making icon as button
-document.getElementById('paper-plane-icon').addEventListener('click', function() {
-    // Add your desired action here, e.g. submit form, trigger AJAX request, etc.
-    alert('Paper airplane clicked!');
+// Obsługa kliknięcia poza polem wyszukiwania
+document.addEventListener('click', (e) => {
+    if (!searchForm.contains(e.target) && searchForm.classList.contains('active')) {
+        searchForm.classList.remove('active'); // Ukryj pole
+        clearHighlights(); // Usuń podświetlenia
+    }
 });
+
+// Obsługa zamknięcia na ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && searchForm.classList.contains('active')) {
+        searchForm.classList.remove('active'); // Ukryj pole
+        clearHighlights(); // Usuń podświetlenia
+    }
+});
+
+// Obsługa ENTER w formularzu - podświetlenie na stronie
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault(); // Zatrzymanie domyślnego działania
+        const query = searchInput.value.trim(); // Pobierz wartość inputa
+
+        if (query) {
+            clearHighlights(); // Wyczyść wcześniejsze podświetlenia
+            highlightText(query); // Podkreśl tekst na stronie
+        } else {
+            alert('Wpisz coś, aby wyszukać!');
+        }
+    }
+});
+
+// Funkcja do podkreślania tekstu
+function highlightText(query) {
+    const elements = document.body.querySelectorAll('*:not(script):not(style):not(input):not(textarea)');
+    const regex = new RegExp(`(${query})`, 'gi'); // Dopasuj fragmenty tekstu
+    let found = false;
+
+    elements.forEach(element => {
+        if (element.children.length === 0) { // Tylko elementy bez dzieci (tekstowe)
+            const text = element.textContent;
+
+            if (regex.test(text)) {
+                found = true;
+
+                // Zapisz oryginalny tekst w atrybucie data-original-text
+                if (!element.hasAttribute('data-original-text')) {
+                    element.setAttribute('data-original-text', text);
+                }
+
+                // Podświetl znaleziony tekst
+                element.innerHTML = text.replace(regex, '<mark class="highlight">$1</mark>');
+            }
+        }
+    });
+
+    // Przewinięcie do pierwszego wyniku
+    const firstHighlight = document.querySelector('mark.highlight');
+    if (firstHighlight) {
+        firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (!found) {
+        alert(`Brak wyników dla: "${query}"`);
+    }
+}
+
+// Funkcja do czyszczenia podświetleń
+function clearHighlights() {
+    const elements = document.querySelectorAll('[data-original-text]'); // Znajdź elementy z atrybutem
+    elements.forEach(element => {
+        const originalText = element.getAttribute('data-original-text'); // Pobierz oryginalny tekst
+        element.innerHTML = originalText; // Przywróć oryginalny tekst
+        element.removeAttribute('data-original-text'); // Usuń atrybut
+    });
+}
+
+
+
+    // Zamykanie formularza po kliknięciu poza nim
+    window.addEventListener('click', (e) => {
+        if (!searchForm.contains(e.target) && e.target !== searchBtn) {
+            searchForm.classList.remove('active'); // Zamyka formularz
+        }
+    });
+
+    // Zamknięcie wszystkich sekcji przy scrollu
+    window.onscroll = () => {
+        if (navbar) navbar.classList.remove('active');
+        if (cartItem) cartItem.classList.remove('active');
+        if (searchForm) searchForm.classList.remove('active');
+
+    };
+
+// Zamykanie menu po kliknięciu w link
+const navLinks = document.querySelectorAll('.navbar a');
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        navbar.classList.remove('active'); // Zamyka menu po kliknięciu linku
+    });
+});
+
+// Ukrywanie menu po przewinięciu strony
+window.addEventListener('scroll', () => {
+    navbar.classList.remove('active'); // Zamyka menu po scrollu
+});
+
+
+
+
+///////////////////////////////////////// Dark light motyw /////////////////////////
+
+const themeToggleButton = document.getElementById('theme-toggle');
+const themeIcon = themeToggleButton; // Ikona zmiany motywu
+
+// Funkcja do przełączania motywu
+const toggleTheme = () => {
+    document.body.classList.toggle('dark-mode'); // Przełączanie klasy 'dark-mode' na body
+
+    // Zmiana ikony motywu
+    if (themeIcon.classList.contains('fa-sun')) {
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+    } else {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+    }
+
+    // Zapisanie preferencji motywu w localStorage
+    if (document.body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark-mode'); // Zapisujemy ciemny motyw
+    } else {
+        localStorage.removeItem('theme'); // Usuwamy zapisany motyw, gdy jest jasny
+    }
+};
+
+// Nasłuchiwanie kliknięcia przycisku zmiany motywu
+themeToggleButton.addEventListener('click', toggleTheme);
+
+// Sprawdzenie, czy użytkownik już wybrał motyw w localStorage
+const currentTheme = localStorage.getItem('theme');
+if (currentTheme === 'dark-mode') {
+    document.body.classList.add('dark-mode'); // Ustawiamy ciemny motyw, jeśli zapisano w localStorage
+    themeIcon.classList.remove('fa-sun');
+    themeIcon.classList.add('fa-moon'); // Ustawiamy odpowiednią ikonę
+}
+
+///////////////////////////////////////// Dark light motyw /////////////////////////
+
+
+////////// form
+
+
+document.getElementById("contactForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Zapobiegamy domyślnej akcji formularza (przeładowanie strony)
+
+    const formData = new FormData(this); // Pobieramy dane z formularza
+
+    // Tworzymy nowy obiekt XMLHttpRequest (AJAX)
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "users/submit_form.php", true); // Wysyłamy dane do PHP
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                // Jeśli odpowiedź jest poprawna (status 200), wyświetlamy komunikat
+                document.getElementById("responseMessage").innerHTML = xhr.responseText;
+                document.getElementById("responseMessage").style.display = "block"; // Wyświetlamy komunikat
+            } else {
+                // Jeśli wystąpił błąd, możemy wyświetlić komunikat o błędzie
+                document.getElementById("responseMessage").innerHTML = "Wystąpił błąd, spróbuj ponownie.";
+                document.getElementById("responseMessage").style.display = "block";
+            }
+        }
+    };
+    xhr.send(formData); // Wysyłamy dane formularza na serwer
+});
+
+
+
+
+//////////////////////////
+
+
+
+window.addEventListener('scroll', function () {
+    const header = document.querySelector('.header');
+    header.classList.toggle('scroll', window.scrollY > 50);
+});
+
+
+const swiper = new Swiper('.swiper-container', {
+    loop: true, // Infinity loop
+    slidesPerView: 1, // Widoczny 1 slajd na raz
+    spaceBetween: 20, // Odstęp między slajdami
+    autoplay: {
+        delay: 3000, // Przesuwanie co 3 sekundy
+        disableOnInteraction: false, // Nie zatrzymuje po kliknięciu
+    },
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
+    breakpoints: {
+        768: { slidesPerView: 2 }, // Tablet
+        1024: { slidesPerView: 3 }, // Komputer
+    },
+});
+
+
+
+
+    // Obsługa koszyka
+    const cartBtn = document.querySelector('#cart-btn');
+    if (cartBtn && cartItem) {
+        cartBtn.addEventListener('click', () => {
+            cartItem.classList.toggle('active');
+            navbar.classList.remove('active');
+            searchForm.classList.remove('active');
+        });
+    }
+});
+
+
+
 
 
 //Cart Working JS

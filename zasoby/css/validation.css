@@ -1,0 +1,89 @@
+/* Styl dla prawidłowych danych */
+.input-valid {
+    border: 2px solid #28a745; /* Zielony kolor */
+    border-radius: 5px;
+    background-color: #f0fff0; /* Delikatne tło */
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+}
+
+.input-invalid {
+    border: 2px solid #dc3545; /* Czerwony kolor */
+    border-radius: 5px;
+    background-color: #fff0f0; /* Delikatne tło */
+    box-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
+}
+
+
+/* Komunikaty walidacyjne */
+.validation-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: block;
+}
+
+
+.validation-message.valid {
+    color: #28a745; /* Zielony dla poprawnych */
+    font-weight: bold;
+}
+
+.validation-message.invalid {
+    color: #dc3545; /* Czerwony dla błędnych */
+    font-weight: bold;
+}
+
+.login-button {
+    background-color: #8b4513; /* Ciepły brązowy kolor */
+    color: #fff; /* Biały tekst */
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #6a2c0b; /* Ciemniejszy brąz przy najechaniu */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.login-input {
+    margin-bottom: 10px;
+}
+
+
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    z-index: 1000;
+}
+
+.cookie-banner a {
+    color: #ffa500;
+    text-decoration: underline;
+}
+
+.cookie-banner button {
+    background-color: #ffa500;
+    color: #333;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.cookie-banner button:hover {
+    background-color: #ffcc00;
+}
+
