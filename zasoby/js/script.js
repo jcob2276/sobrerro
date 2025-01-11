@@ -1,75 +1,111 @@
+// DOMContentLoaded Event Listener - Initialize Script
 document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.querySelector('.navbar');
     const cartItem = document.querySelector('.cart');
     const searchForm = document.querySelector('.search-form');
-    const searchBtn = document.querySelector('#search-btn-icon'); // Ikona lupki
-    const searchInput = document.querySelector('#search-box');   // Pole input
+    const searchBtn = document.querySelector('#search-btn-icon');
+    const searchInput = document.querySelector('#search-box');
+    const themeToggleButton = document.getElementById('theme-toggle');
+    const themeIcon = themeToggleButton;
 
-// Obsługa kliknięcia w lupkę
-if (searchBtn && searchForm && searchInput) {
-    searchBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        searchForm.classList.toggle('active'); // Rozwija lub zwija
-        searchInput.focus();
+    // ================== Search Functionality ==================
+    if (searchBtn && searchForm && searchInput) {
+        searchBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            searchForm.classList.toggle('active');
+            searchInput.focus();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchForm.contains(e.target) && searchForm.classList.contains('active')) {
+                searchForm.classList.remove('active');
+                clearHighlights();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && searchForm.classList.contains('active')) {
+                searchForm.classList.remove('active');
+                clearHighlights();
+            }
+        });
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const query = searchInput.value.trim();
+                if (query) {
+                    clearHighlights();
+                    highlightText(query);
+                } else {
+                    alert('Wpisz coś, aby wyszukać!');
+                }
+            }
+        });
+    }
+
+    // ================== Navbar Functionality ==================
+    document.querySelector('#menu-btn')?.addEventListener('click', () => {
+        navbar.classList.toggle('active');
+        cartItem.classList.remove('active');
+        searchForm.classList.remove('active');
     });
-}
 
-// Obsługa kliknięcia poza polem wyszukiwania
-document.addEventListener('click', (e) => {
-    if (!searchForm.contains(e.target) && searchForm.classList.contains('active')) {
-        searchForm.classList.remove('active'); // Ukryj pole
-        clearHighlights(); // Usuń podświetlenia
+    const navLinks = document.querySelectorAll('.navbar a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navbar.classList.remove('active');
+        });
+    });
+
+    window.addEventListener('scroll', () => {
+        navbar.classList.remove('active');
+        cartItem.classList.remove('active');
+        searchForm.classList.remove('active');
+    });
+
+    // ================== Cart Functionality ==================
+    document.querySelector('#cart-btn')?.addEventListener('click', () => {
+        cartItem.classList.toggle('active');
+        navbar.classList.remove('active');
+        searchForm.classList.remove('active');
+    });
+
+    if (document.readyState === 'loading') {
+        document.addEventListener("DOMContentLoaded", cartReady);
+    } else {
+        cartReady();
+    }
+
+    // ================== Theme Toggle Functionality ==================
+    themeToggleButton?.addEventListener('click', () => toggleTheme(themeIcon));
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme === 'dark-mode') {
+        document.body.classList.add('dark-mode');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
     }
 });
 
-// Obsługa zamknięcia na ESC
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && searchForm.classList.contains('active')) {
-        searchForm.classList.remove('active'); // Ukryj pole
-        clearHighlights(); // Usuń podświetlenia
-    }
-});
-
-// Obsługa ENTER w formularzu - podświetlenie na stronie
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault(); // Zatrzymanie domyślnego działania
-        const query = searchInput.value.trim(); // Pobierz wartość inputa
-
-        if (query) {
-            clearHighlights(); // Wyczyść wcześniejsze podświetlenia
-            highlightText(query); // Podkreśl tekst na stronie
-        } else {
-            alert('Wpisz coś, aby wyszukać!');
-        }
-    }
-});
-
-// Funkcja do podkreślania tekstu
+// ================== Search Highlight Functions ==================
 function highlightText(query) {
     const elements = document.body.querySelectorAll('*:not(script):not(style):not(input):not(textarea)');
-    const regex = new RegExp(`(${query})`, 'gi'); // Dopasuj fragmenty tekstu
+    const regex = new RegExp(`(${query})`, 'gi');
     let found = false;
 
     elements.forEach(element => {
-        if (element.children.length === 0) { // Tylko elementy bez dzieci (tekstowe)
+        if (element.children.length === 0) {
             const text = element.textContent;
-
             if (regex.test(text)) {
                 found = true;
-
-                // Zapisz oryginalny tekst w atrybucie data-original-text
                 if (!element.hasAttribute('data-original-text')) {
                     element.setAttribute('data-original-text', text);
                 }
-
-                // Podświetl znaleziony tekst
                 element.innerHTML = text.replace(regex, '<mark class="highlight">$1</mark>');
             }
         }
     });
 
-    // Przewinięcie do pierwszego wyniku
     const firstHighlight = document.querySelector('mark.highlight');
     if (firstHighlight) {
         firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -78,241 +114,16 @@ function highlightText(query) {
     }
 }
 
-// Funkcja do czyszczenia podświetleń
 function clearHighlights() {
-    const elements = document.querySelectorAll('[data-original-text]'); // Znajdź elementy z atrybutem
+    const elements = document.querySelectorAll('[data-original-text]');
     elements.forEach(element => {
-        const originalText = element.getAttribute('data-original-text'); // Pobierz oryginalny tekst
-        element.innerHTML = originalText; // Przywróć oryginalny tekst
-        element.removeAttribute('data-original-text'); // Usuń atrybut
+        const originalText = element.getAttribute('data-original-text');
+        element.innerHTML = originalText;
+        element.removeAttribute('data-original-text');
     });
 }
 
 
-
-    // Zamykanie formularza po kliknięciu poza nim
-    window.addEventListener('click', (e) => {
-        if (!searchForm.contains(e.target) && e.target !== searchBtn) {
-            searchForm.classList.remove('active'); // Zamyka formularz
-        }
-    });
-
-    // Zamknięcie wszystkich sekcji przy scrollu
-    window.onscroll = () => {
-        if (navbar) navbar.classList.remove('active');
-        if (cartItem) cartItem.classList.remove('active');
-        if (searchForm) searchForm.classList.remove('active');
-
-    };
-
-// Zamykanie menu po kliknięciu w link
-const navLinks = document.querySelectorAll('.navbar a');
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        navbar.classList.remove('active'); // Zamyka menu po kliknięciu linku
-    });
-});
-
-// Ukrywanie menu po przewinięciu strony
-window.addEventListener('scroll', () => {
-    navbar.classList.remove('active'); // Zamyka menu po scrollu
-});
-
-
-
-
-///////////////////////////////////////// Dark light motyw /////////////////////////
-
-const themeToggleButton = document.getElementById('theme-toggle');
-const themeIcon = themeToggleButton; // Ikona zmiany motywu
-
-// Funkcja do przełączania motywu
-const toggleTheme = () => {
-    document.body.classList.toggle('dark-mode'); // Przełączanie klasy 'dark-mode' na body
-
-    // Zmiana ikony motywu
-    if (themeIcon.classList.contains('fa-sun')) {
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-    } else {
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-    }
-
-    // Zapisanie preferencji motywu w localStorage
-    if (document.body.classList.contains('dark-mode')) {
-        localStorage.setItem('theme', 'dark-mode'); // Zapisujemy ciemny motyw
-    } else {
-        localStorage.removeItem('theme'); // Usuwamy zapisany motyw, gdy jest jasny
-    }
-};
-
-// Nasłuchiwanie kliknięcia przycisku zmiany motywu
-themeToggleButton.addEventListener('click', toggleTheme);
-
-// Sprawdzenie, czy użytkownik już wybrał motyw w localStorage
-const currentTheme = localStorage.getItem('theme');
-if (currentTheme === 'dark-mode') {
-    document.body.classList.add('dark-mode'); // Ustawiamy ciemny motyw, jeśli zapisano w localStorage
-    themeIcon.classList.remove('fa-sun');
-    themeIcon.classList.add('fa-moon'); // Ustawiamy odpowiednią ikonę
-}
-
-///////////////////////////////////////// Dark light motyw /////////////////////////
-
-
-////////// form
-
-
-document.getElementById("contactForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Zapobiegamy domyślnej akcji formularza (przeładowanie strony)
-
-    const formData = new FormData(this); // Pobieramy dane z formularza
-
-    // Tworzymy nowy obiekt XMLHttpRequest (AJAX)
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "users/submit_form.php", true); // Wysyłamy dane do PHP
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                // Jeśli odpowiedź jest poprawna (status 200), wyświetlamy komunikat
-                document.getElementById("responseMessage").innerHTML = xhr.responseText;
-                document.getElementById("responseMessage").style.display = "block"; // Wyświetlamy komunikat
-            } else {
-                // Jeśli wystąpił błąd, możemy wyświetlić komunikat o błędzie
-                document.getElementById("responseMessage").innerHTML = "Wystąpił błąd, spróbuj ponownie.";
-                document.getElementById("responseMessage").style.display = "block";
-            }
-        }
-    };
-    xhr.send(formData); // Wysyłamy dane formularza na serwer
-});
-
-
-
-
-//////////////////////////
-
-
-
-window.addEventListener('scroll', function () {
-    const header = document.querySelector('.header');
-    header.classList.toggle('scroll', window.scrollY > 50);
-});
-
-
-const swiper = new Swiper('.swiper-container', {
-    loop: true, // Infinity loop
-    slidesPerView: 1, // Widoczny 1 slajd na raz
-    spaceBetween: 20, // Odstęp między slajdami
-    autoplay: {
-        delay: 3000, // Przesuwanie co 3 sekundy
-        disableOnInteraction: false, // Nie zatrzymuje po kliknięciu
-    },
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-    },
-    breakpoints: {
-        768: { slidesPerView: 2 }, // Tablet
-        1024: { slidesPerView: 3 }, // Komputer
-    },
-});
-
-
-
-
-    // Obsługa koszyka
-    const cartBtn = document.querySelector('#cart-btn');
-    if (cartBtn && cartItem) {
-        cartBtn.addEventListener('click', () => {
-            cartItem.classList.toggle('active');
-            navbar.classList.remove('active');
-            searchForm.classList.remove('active');
-        });
-    }
-});
-
-
-
-
-
-//Cart Working JS
-if (document.readyState == 'loading') {
-    document.addEventListener("DOMContentLoaded", ready);
-} else {
-    ready();
-}
-
-// FUNCTIONS FOR CART
-function ready() {
-    //Remove Items from Cart
-    var removeCartButtons = document.getElementsByClassName('cart-remove');
-    console.log(removeCartButtons);
-    for (var i = 0; i < removeCartButtons.length; i++){
-        var button = removeCartButtons[i];
-        button.addEventListener('click', removeCartItem);
-    }
-
-    // When quantity changes
-    var quantityInputs = document.getElementsByClassName("cart-quantity");
-    for (var i = 0; i < quantityInputs.length; i++){
-        var input = quantityInputs[i];
-        input.addEventListener("change", quantityChanged);
-    }
-
-    // Add to Cart
-    var addCart = document.getElementsByClassName('add-cart');
-    for (var i = 0; i < addCart.length; i++){
-        var button = addCart[i];
-        button.addEventListener("click", addCartClicked);
-    }
-
-    // Buy Button Works
-    document.getElementsByClassName("btn-buy")[0].addEventListener("click", buyButtonClicked);
-}
-
-// Function for "Buy Button Works"
-function buyButtonClicked() {
-    alert('Zamówienie zostało złożone!');
-    var cartContent = document.getElementsByClassName("cart-content")[0];
-    var cartBoxes = cartContent.getElementsByClassName("cart-box");
-    var orderDetails = [];
-
-    // Generate invoice number
-    var invoiceNumber = generateInvoiceNumber();
-
-    // Loop through all cart boxes to get details
-    for (var i = 0; i < cartBoxes.length; i++) {
-        var cartBox = cartBoxes[i];
-        var title = cartBox.getElementsByClassName("cart-product-title")[0].innerText;
-        var price = cartBox.getElementsByClassName("cart-price")[0].innerText;
-        var quantity = cartBox.getElementsByClassName("cart-quantity")[0].value;
-        var priceValue = parseFloat(price.replace('Zł', '').replace(',', ''));
-        var subtotalAmount = priceValue * quantity;
-        orderDetails.push({ title: title, price: priceValue, quantity: quantity, subtotal_amount: subtotalAmount, invoice_number: invoiceNumber });    
-    }
-
-    //Send data to server using AJAX
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "add_to_database.php", true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(xhr.responseText);
-        }
-    };
-    xhr.send(JSON.stringify(orderDetails));
-    cartItem.classList.remove('active');
-
-    // Clear cart after sending data to server
-    while (cartContent.hasChildNodes()) {
-        cartContent.removeChild(cartContent.firstChild);
-    }
-    updateTotal();
-}
-
-  //zepsujmy cos
 function reorder(orderId) {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "add_to_database.php", true);
@@ -331,85 +142,185 @@ function reorder(orderId) {
     xhr.send("order_id=" + orderId);
 }
 
+// ================== Cart Functions ==================
 
-// Function to generate invoice number
-function generateInvoiceNumber() {
-    // Implement your logic to generate an invoice number here
-    return "INV-" + Math.floor(Math.random() * 1000000);
+function updateCartCounter() {
+    const cartItems = document.querySelectorAll(".cart-box");
+    const cartCounter = document.getElementById("cart-counter");
+
+    // Zlicz wszystkie produkty w koszyku (sumując ich ilości)
+    const totalItems = Array.from(cartItems).reduce((total, cartBox) => {
+        const quantity = parseInt(cartBox.querySelector(".cart-quantity").value);
+        return total + quantity;
+    }, 0);
+
+    cartCounter.textContent = totalItems;
+
+    // Ukryj licznik, jeśli jest pusty, lub pokaż, jeśli są produkty
+    cartCounter.style.visibility = totalItems > 0 ? "visible" : "hidden";
 }
 
-// Function for "Remove Items from Cart"
+
+
+function cartReady() {
+    const removeCartButtons = document.getElementsByClassName('cart-remove');
+    Array.from(removeCartButtons).forEach(button => button.addEventListener('click', removeCartItem));
+
+    const quantityInputs = document.getElementsByClassName("cart-quantity");
+    Array.from(quantityInputs).forEach(input => input.addEventListener("change", quantityChanged));
+
+    const addCartButtons = document.getElementsByClassName('add-cart');
+    Array.from(addCartButtons).forEach(button => button.addEventListener("click", addCartClicked));
+
+    document.getElementsByClassName("btn-buy")[0]?.addEventListener("click", buyButtonClicked);
+}
+
 function removeCartItem(event) {
-    var buttonClicked = event.target;
-    buttonClicked.parentElement.remove();
+    event.target.parentElement.remove();
     updateTotal();
+    updateCartCounter();
 }
 
-// Function for "When quantity changes"
+
 function quantityChanged(event) {
-    var input = event.target;
+    const input = event.target;
     if (isNaN(input.value) || input.value <= 0) {
         input.value = 1;
     }
     updateTotal();
+    updateCartCounter();
 }
 
-//Add to Cart
+
 function addCartClicked(event) {
-    var button = event.target;
-    var shopProducts = button.parentElement;
-    var title = shopProducts.getElementsByClassName("product-title")[0].innerText;
-    var price = shopProducts.getElementsByClassName("price")[0].innerText;
-    var productImg = shopProducts.getElementsByClassName("product-img")[0].src;
+    const button = event.target;
+    const shopProducts = button.parentElement;
+    const title = shopProducts.querySelector(".product-title").innerText;
+    const price = shopProducts.querySelector(".price").innerText;
+    const productImg = shopProducts.querySelector(".product-img").src;
+
     addProductToCart(title, price, productImg);
     updateTotal();
+    updateCartCounter();
 }
+
 
 function addProductToCart(title, price, productImg) {
-    var cartShopBox = document.createElement("div");
+    const cartItems = document.querySelector(".cart-content");
+
+    // Sprawdź, czy produkt już istnieje w koszyku
+    const existingCartItem = Array.from(cartItems.getElementsByClassName("cart-product-title"))
+        .find(cartItem => cartItem.innerText.trim().toLowerCase() === title.trim().toLowerCase());
+
+    if (existingCartItem) {
+        // Zwiększ ilość istniejącego produktu
+        const cartBox = existingCartItem.closest('.cart-box');
+        const quantityInput = cartBox.querySelector('.cart-quantity');
+        quantityInput.value = parseInt(quantityInput.value) + 1;
+
+        // Aktualizuj sumę i licznik
+        updateTotal();
+        updateCartCounter();
+        return;
+    }
+
+    // Jeśli produkt nie istnieje, dodaj go do koszyka
+    const cartShopBox = document.createElement("div");
     cartShopBox.classList.add("cart-box");
-    var cartItems = document.getElementsByClassName("cart-content")[0];
-    var cartItemsNames = cartItems.getElementsByClassName("cart-product-title");
-    for (var i = 0; i < cartItemsNames.length; i++) {
-        if (cartItemsNames[i].innerText == title) {
-            alert("You have already added this item to cart!")
-            return;
-        }
-    }
-    var cartBoxContent = `
-                    <img src="${productImg}" alt="" class="cart-img">
-                    <div class="detail-box">
-                        <div class="cart-product-title">${title}</div>
-                        <div class="cart-price">${price}</div>
-                        <input type="number" value="1" min="1" class="cart-quantity">
-                    </div>
-                    <!-- REMOVE BUTTON -->
-                    <i class="fas fa-trash cart-remove"></i>`;
-    cartShopBox.innerHTML = cartBoxContent;
+    cartShopBox.innerHTML = `
+        <img src="${productImg}" alt="" class="cart-img">
+        <div class="detail-box">
+            <div class="cart-product-title">${title}</div>
+            <div class="cart-price">${price}</div>
+            <input type="number" value="1" min="1" class="cart-quantity">
+        </div>
+        <i class="fas fa-trash cart-remove"></i>`;
     cartItems.append(cartShopBox);
-    cartShopBox
-        .getElementsByClassName("cart-remove")[0]
-        .addEventListener('click', removeCartItem);
-    cartShopBox
-        .getElementsByClassName("cart-quantity")[0]
-        .addEventListener('change', quantityChanged);
 
+    // Dodaj nasłuchiwacze dla nowo dodanych elementów
+    cartShopBox.querySelector(".cart-remove").addEventListener('click', removeCartItem);
+    cartShopBox.querySelector(".cart-quantity").addEventListener('change', quantityChanged);
+
+    // Aktualizuj sumę i licznik
+    updateTotal();
+    updateCartCounter();
 }
 
-// Update Total
+
 function updateTotal() {
-    var cartContent = document.getElementsByClassName("cart-content")[0];
-    var cartBoxes = cartContent.getElementsByClassName("cart-box");
-    var total = 0;
-    for (var i = 0; i < cartBoxes.length; i++) {
-        var cartBox = cartBoxes[i];
-        var priceElement = cartBox.getElementsByClassName("cart-price")[0];
-        var quantityElement = cartBox.getElementsByClassName("cart-quantity")[0];
-        var price = parseFloat(priceElement.innerText.replace("Zł", ""));
-        var quantity = quantityElement.value;
-        total = total + (price * quantity);
-    }
-        total = Math.round(total * 100) / 100;
-        
-        document.getElementsByClassName("total-price")[0].innerText = "Zł" + total;
+    const cartBoxes = document.querySelectorAll(".cart-box");
+    let total = 0;
+
+    cartBoxes.forEach(cartBox => {
+        const price = parseFloat(cartBox.querySelector(".cart-price").innerText.replace("Zł", ""));
+        const quantity = parseInt(cartBox.querySelector(".cart-quantity").value);
+        total += price * quantity;
+    });
+
+    total = Math.round(total * 100) / 100;
+    document.querySelector(".total-price").innerText = "Zł" + total;
 }
+
+
+function buyButtonClicked() {
+    const cartContent = document.querySelector(".cart-content");
+    const cartBoxes = document.querySelectorAll(".cart-box");
+
+    let orderDetails = [];
+    cartBoxes.forEach(cartBox => {
+        const title = cartBox.querySelector(".cart-product-title").innerText;
+        const price = parseFloat(cartBox.querySelector(".cart-price").innerText.replace("Zł", ""));
+        const quantity = parseInt(cartBox.querySelector(".cart-quantity").value);
+        orderDetails.push({ title, price, quantity });
+    });
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "add_to_database.php", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            alert("Zamówienie zostało złożone!");
+            cartContent.innerHTML = '';
+            updateTotal();
+        }
+    };
+    xhr.send(JSON.stringify(orderDetails));
+}
+
+
+
+
+
+
+
+// ================== Theme Toggle Functionality ==================
+themeToggleButton?.addEventListener('click', () => toggleTheme(themeIcon));
+
+// Sprawdzenie zapisanej wartości motywu w localStorage
+const currentTheme = localStorage.getItem('theme');
+
+// Ustawienie motywu podczas ładowania strony
+if (currentTheme === 'dark-mode') {
+    document.body.classList.add('dark-mode');
+    themeIcon.classList.remove('fa-sun');
+    themeIcon.classList.add('fa-moon');
+} else {
+    themeIcon.classList.remove('fa-moon');
+    themeIcon.classList.add('fa-sun');
+}
+
+// Funkcja do przełączania motywu
+function toggleTheme(themeIcon) {
+    document.body.classList.toggle('dark-mode');
+
+    if (document.body.classList.contains('dark-mode')) {
+        themeIcon.classList.replace('fa-sun', 'fa-moon'); // Ikona księżyca
+        localStorage.setItem('theme', 'dark-mode');      // Zapis w localStorage
+    } else {
+        themeIcon.classList.replace('fa-moon', 'fa-sun'); // Ikona słońca
+        localStorage.removeItem('theme');                // Usunięcie zapisu
+    }
+}
+
+
+

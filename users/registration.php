@@ -78,6 +78,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = $stmt->execute();
 
         if ($result) {
+
+            // Zapisz imię w sesji
+            $_SESSION['imie'] = $name;
+
+            // Przekierowanie na stronę główną
+            header("Location: index.php");
+            exit;
+
+
             // Wysyłanie e-maila z potwierdzeniem
             $to = trim($_POST['email']);
             $subject = "Potwierdzenie rejestracji w Sombrerro";

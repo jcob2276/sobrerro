@@ -1,34 +1,28 @@
 <!DOCTYPE HTML>
 <html>
 
+<!-- Importy, bootstrapy, Mapy, Scroll -->
+
 <head>
+    <!-- Meta dane -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    <!-- Tytuł i favicon -->
     <title>Kawiarnia Sombrerro</title>
     <link rel="icon" type="image/png" href="zasoby/zdjecia/favicon.png">
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"
-        integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"
-        integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ"
-        crossorigin="anonymous"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2Hhh_14Uam62GXGaTMcXWhhVkYg0EbDY&callback=initMap"
-        async defer></script>
-    <script src="https://unpkg.com/scrollreveal"></script>
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Custom CSS File Link -->
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="zasoby/css/style.css">
     <link rel="stylesheet" href="zasoby/css/chat.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- font awesome cdn link -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"><!-- Google font cdn link -->
 </head>
 
 
@@ -49,6 +43,10 @@
 
         <!-- MAIN MENU FOR SMALLER DEVICES -->
         <nav class="navbar navbar-expand-lg">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a href="#home" class="text-decoration-none">Strona główna</a>
@@ -69,13 +67,54 @@
                     <a href="users/login.php" class="text-decoration-none">Login</a>
                 </li>
             </ul>
-            </div>
         </nav>
+
+
+        <!-- Menu, początkowo ukryte -->
+        <div id="mobile-menu"
+            style="display:none; position: fixed; right: -100%; top: 0; height: 100%; width: 50%; background-color: #fff; z-index: 999;">
+            <div class="menu-content" style="padding: 20px;">
+                <ul>
+                    <li><a href="#home">Strona Główna</a></li>
+                    <li><a href="#about">O Nas</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#blogs">Blog</a></li>
+                    <li><a href="#contact">Kontakt</a></li>
+                    <li><a href="users/login.php">Login</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <script>
+
+            // Znajdź przycisk hamburgera i menu
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            // Funkcja do przełączania menu
+            menuBtn.addEventListener('click', () => {
+                // Sprawdź, czy menu jest już widoczne
+                if (mobileMenu.style.display === "none" || mobileMenu.style.display === "") {
+                    mobileMenu.style.display = "block"; // Pokaż menu
+                    setTimeout(() => {
+                        mobileMenu.style.right = "0"; // Wysuwamy menu z prawej strony
+                    }, 10); // Opóźnienie dla animacji
+                } else {
+                    mobileMenu.style.right = "-100%"; // Schowaj menu
+                    setTimeout(() => {
+                        mobileMenu.style.display = "none"; // Ukryj po zakończeniu animacji
+                    }, 300); // Opóźnienie dla animacji
+                }
+            });
+
+
+        </script>
+
         <div class="icons">
             <div id="theme-toggle" class="fas fa-sun"></div> <!-- Domyślnie ikona słońca -->
             <div class="fas fa-search" id="search-btn-icon"></div> <!-- LUPKA -->
             <div class="fas fa-shopping-cart" id="cart-btn" onclick="redirectCart()"></div>
-            <div class="fas fa-bars" id="menu-btn"> </div> <!-- HAMBURGER -->
+            <div id="menu-btn" class="fas fa-bars"></div> <!-- HAMBURGER -->
         </div>
 
         <!-- SEARCH TEXT BOX -->
@@ -87,17 +126,7 @@
             </div>
         </div>
 
-        <script>
-            // Znajdź przycisk hamburgera i menu
-            const menuBtn = document.getElementById('menu-btn');
-            const navbar = document.querySelector('.navbar');
 
-            // Funkcja do przełączania menu
-            menuBtn.addEventListener('click', () => {
-                navbar.classList.toggle('active'); // Dodaje lub usuwa klasę active
-                console.log("Kliknięto przycisk hamburgera"); // Logowanie, aby sprawdzić, czy działa
-            });
-        </script>
 
         <!-- CART SECTION -->
         <div class="cart">
@@ -118,62 +147,51 @@
 
 
     <!-- HERO SECTION -->
-    <section class="home parallax" id="home">
+    <section class="home" id="home">
         <div class="content">
-            <h1>Witaj w Kawiarni Sobrerro!</h1>
-            <p>Jesteśmy otwarci codziennie od 7:00 do 19:30</p>
-            <a href="#menu" class="btn">Zamów Online</a>
+            <h3>Witaj w Kawiarni Sombrerro!</h3>
+            <p>
+                <strong>Jesteśmy otwarci codziennie od 7:00 do 19:30</strong>
+            </p>
+            <a href="#menu" class="btn btn-dark text-decoration-none">Zamów online</a>
         </div>
     </section>
 
 
 
 
-
     <!-- ABOUT US SECTION -->
-    <section class="about" id="about">
+    <section class="about theme-bg-light theme-text-dark" id="about">
         <h1 class="heading"> <span>O nas </span></h1>
         <div class="row g-0">
             <div class="image">
                 <img src="zasoby/zdjecia/hero.png" alt="" class="img-fluid">
             </div>
             <div class="content">
-                <h3>Witamy w naszej Kawiarri </h3>
+            <h3 style="color: white;">Witamy w naszej Kawiarni</h3>
+
                 <p>
                     <b>Kawiarnia Sombrerro – Twoja przystań pełna smaku i wyjątkowej atmosfery</b><br>
                     W sercu miasta, gdzie codzienność miesza się z chwilami wytchnienia, znajduje się Kawiarnia
                     Sombrerro – miejsce, które powstało z miłości do kawy, czekolady i radości płynącej z małych
                     przyjemności życia.
-                    W naszej kawiarni każdy znajdzie coś dla siebie – od aromatycznej kawy przygotowanej z najlepszych
-                    ziaren, po ręcznie robione desery, które rozpieszczą Twoje podniebienie. To nie tylko miejsce, gdzie
-                    możesz cieszyć się pysznym jedzeniem, ale również przestrzeń, która zaprasza do zatrzymania się na
-                    chwilę, odpoczynku i spotkań z bliskimi.
-
                     <br><br><i>Co nas wyróżnia?</i> <br>
-                    ☕ <b>Kawa o wyjątkowym smaku</b> – wyselekcjonowane ziarna z najlepszych plantacji, które wydobywają
-                    głębię aromatów w każdej filiżance.<br>
-                    🍰 <b>Desery z sercem</b> – od klasycznego tiramisu, przez kremowe serniki, po nietuzinkowe ciasta
-                    inspirowane kuchniami świata. <br>
-                    🎨 <b>Unikalny klimat</b> – połączenie nowoczesności z nutą meksykańskiego luzu – sombrero w nazwie
-                    to nie przypadek! <br>
-
+                    ☕ <b>Kawa o wyjątkowym smaku</b> – wyselekcjonowane ziarna z najlepszych plantacji.<br>
+                    🍰 <b>Desery z sercem</b> – od klasycznego tiramisu, przez kremowe serniki, po nietuzinkowe
+                    ciasta.<br>
+                    🎨 <b>Unikalny klimat</b> – połączenie nowoczesności z nutą meksykańskiego luzu. <br>
                 </p>
                 <p>
-
-                    Dla każdego coś pysznego
-                    Czy jesteś miłośnikiem porannego espresso, czy relaksujesz się przy popołudniowym cappuccino –
-                    Kawiarnia Sombrerro ma dla Ciebie idealną propozycję. Zajrzyj też na naszą sezonową kartę –
-                    znajdziesz tam gorące napoje, które ogrzeją zimą i orzeźwiające koktajle na lato.
+                    Dla każdego coś pysznego. Czy jesteś miłośnikiem porannego espresso, czy relaksujesz się przy
+                    popołudniowym cappuccino – Kawiarnia Sombrerro ma dla Ciebie idealną propozycję.
                     <br>
                     <b>Zapraszamy codziennie – tu każdy dzień zaczyna się i kończy lepiej!</b><br>
-                    📍 Znajdziesz nas w [tu wstaw lokalizację]. <br>
-                    ⏰ Godziny otwarcia: [tu wstaw godziny]. <br>
-
                 </p>
                 <a href="#" class="btn btn-dark text-decoration-none">Zasmakuj więcej</a>
             </div>
         </div>
     </section>
+
 
 
     <!-- MENU SECTION -->
@@ -378,7 +396,7 @@
                                 Macchiato!
                             </p>
                             <img src="zasoby/zdjecia/awatar.png" alt="" class="user">
-                            <h3>Anna K.</h3>
+                            <h3 class="review-name">Anna K.</h3> <!-- Dodana klasa -->
                             <div class="stars">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -396,7 +414,7 @@
                                 filiżanką świeżo mielonej kawy. Polecam Nitro Cold Brew – coś wyjątkowego!
                             </p>
                             <img src="zasoby/zdjecia/awatar.png" alt="" class="user">
-                            <h3>Marek Z.</h3>
+                            <h3 class="review-name">Marek Z.</h3> <!-- Dodana klasa -->
                             <div class="stars">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -414,7 +432,7 @@
                                 pachnie jak w najlepszych kawiarniach we Włoszech. Matcha Latte to mój faworyt!
                             </p>
                             <img src="zasoby/zdjecia/awatar.png" alt="" class="user">
-                            <h3>Kasia M.</h3>
+                            <h3 class="review-name">Kasia M.</h3> <!-- Dodana klasa -->
                             <div class="stars">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -430,18 +448,19 @@
     </section>
 
 
+
     <!-- CONTACT US SECTION -->
     <section class="contact" id="contact">
         <h1 class="heading">Kontakt</h1>
         <div class="row">
             <div id="map" class="map pull-left">
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2563.9114942322176!2d22.45310407701254!3d50.013014071512025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x473c92277e781eb1%3A0x63e46b804bba156b!2sUrzejowice%20152A%2C%2037-221%20Urzejowice!5e0!3m2!1spl!2spl!4v1732310993264!5m2!1spl!2spl"
-                    style="border:0; width:100%; height:100%;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3040.918488163871!2d21.982499526809274!3d50.01914421832455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x473cfbb46da3e3ef%3A0x2a90710dbe86a513!2sAleja%20Powsta%C5%84c%C3%B3w%20Warszawy%2012%2C%2035-959%20Rzesz%C3%B3w!5e1!3m2!1spl!2spl!4v1736378400954!5m2!1spl!2spl" 
+                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    
             </div>
             <form id="contactForm" name="contact" method="POST" action="users/submit_form.php">
-                <h3>Masz pytanie? Napisz do nas!</h3>
+                <h3 style="color: white;">Masz pytanie? Napisz do nas!</h3>
                 <div class="inputBox">
                     <span class="fas fa-envelope"></span>
                     <input type="email" name="email" placeholder="Adres email" required>
@@ -472,7 +491,7 @@
                 <p>@Sombrerro</p><br />
             </div>
             <div class="support">
-                <h2>Pomoc techniczna</h2>
+                <h2 class="footer-heading">Pomoc techniczna</h2> <!-- Dodana klasa -->
                 <br />
                 <a href="#">Kontakt</a>
                 <a href="#">Obsługa klienta</a>
@@ -481,33 +500,43 @@
             </div>
 
             <div class="company">
-                <h2>Firma</h2>
+                <h2 class="footer-heading">Firma</h2> <!-- Dodana klasa -->
                 <br />
                 <a href="#">O nas</a>
                 <a href="#">Partnerzy afiliacyjni</a>
                 <a href="#">Zasoby</a>
                 <a href="#">Partnerstwo</a>
                 <a href="#">Dostawcy</a>
-
             </div>
             <div class="newsletters">
-                <h2>Newsletter</h2>
+                <h2 class="footer-heading">Newsletter</h2>
                 <br />
                 <p>Zapisz się do newslettera już dziś!</p>
-                <div class="input-wrapper">
-                    <input type="email" class="newsletter" placeholder="Adres email">
-                    <i id="paper-plane-icon" class="fas fa-paper-plane"></i>
-                </div>
+                <form action="users/newsletter.php" method="POST">
+                    <div class="input-wrapper">
+                        <input type="email" name="email" class="newsletter" placeholder="Adres email" required>
+                        <!-- Naprawiony kod przycisku -->
+                        <button type="submit" id="paper-plane-icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="credit">
+
+
+
+
+            <div class="credit" style="color: white;">
                 <hr /><br />
-                <h2>Kawiarria Sombrerro © 2024 | Wszelkie prawa zastrzeżone.</h2>
-                <h2>Stworzone przez <span>Dawid Stachiewicz</span> || <span>Jakub Soboń</span> || <span>Katarzyna
-                        Strzępek</span></h2>
+                <h2 class="footer-heading">Kawiarria Sombrerro © 2024 | Wszelkie prawa zastrzeżone.</h2>
+                <!-- Dodana klasa -->
+                <h2 class="footer-heading">
+                    Stworzone przez <span>Dawid Stachiewicz</span> || <span>Jakub Soboń</span> || <span>Katarzyna
+                        Strzępek</span>
+                </h2> <!-- Dodana klasa -->
             </div>
         </div>
     </section>
-
 
 
     <!-- CHAT BAR BLOCK -->
@@ -562,26 +591,7 @@
 
 
     <script>
-        // CODE FOR THE FORMSPREE
-        window.onbeforeunload = () => {
-            for (const form of document.getElementsByTagName('form')) {
-                form.reset();
-            }
-        }
 
-        // CODE FOR THE GOOGLE MAPS API
-        function initMap() {
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 14.99367271992383, lng: 120.17629231186626 },
-                zoom: 9
-            });
-
-            var marker = new google.maps.Marker({
-                position: { lat: 14.99367271992383, lng: 120.17629231186626 },
-                map: map,
-                title: 'Twoja lokalizacja'
-            });
-        }
 
         // CODE FOR THE SHOW MORE & SHOW LESS BUTTON IN MENU
         $(document).ready(function () {
@@ -615,6 +625,23 @@
     <link rel="stylesheet" href="zasoby/css/validation.css">
     <!-- Skrypt JS do obsługi komunikatu -->
     <script src="zasoby/js/cookie-consent.js"></script>
+
+
+    <!-- Bootstrap Bundle JS (zawiera Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2Hhh_14Uam62GXGaTMcXWhhVkYg0EbDY&callback=initMap"
+        async defer></script>
+
+    <!-- ScrollReveal -->
+    <script src="https://unpkg.com/scrollreveal"></script>
+
+    <!-- Custom JS -->
+    <script src="zasoby/js/main.js"></script>
+
 
 </body>
 

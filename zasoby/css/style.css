@@ -10,7 +10,7 @@
     --sixth-color: #e7a891;         /* Beżowy akcent */
     --black: #13131a;               /* Czarny */
     --bg: #ffffff;                  /* Jasne tło */
-    --text-color: #000000;           /* Tekst czarny */
+    --text-color: #000;           /* Tekst czarny */
     --header-bg: linear-gradient(to right, #4e342e, #6d4c41); /* Tło nagłówka */
     --header-text: #ffffff;         /* Kolor tekstu nagłówka w jasnym motywie */
     --header-icon: #ffffff;         /* Ikony nagłówka w jasnym motywie */
@@ -72,7 +72,7 @@ body.dark-mode .footer {
     outline: none;
     border: none;
     text-decoration: none;
-    text-transform: capitalize;
+    text-transform: none;
     transition: .2s linear;
 }
 
@@ -190,7 +190,7 @@ section {
 .header .cart {
     position: absolute;
     top: 100%;
-    right: -100%;
+    right: -100%; /* Domyślnie ukryty po prawej stronie */
     height: calc(100vh - 9.5rem);
     width: 35rem;
     background-color: #fff;
@@ -198,7 +198,7 @@ section {
 }
 
 .header .cart.active {
-    right: 0;
+    right: 0; /* Po dodaniu klasy 'active' wysuwa się na ekran */
 }
 
 html {
@@ -256,7 +256,7 @@ mark {
     display: inline-block;
     padding: 1rem 3rem;
     font-size: 1.7rem;
-    color: #fff;
+    color: var(--text-color); /* Dynamiczny kolor zależny od motywu */
     background-color: var(--main-color);
     cursor: pointer;
 }
@@ -271,6 +271,53 @@ mark {
     text-align: center;
 }
 
+
+.typewriter {
+  display: inline-block;
+  overflow: hidden;
+  border-right: 2px solid white;
+  white-space: nowrap;
+  animation: typing 4s steps(30) 1, blink 0.5s step-end infinite;
+  color: white; /* Kolor tekstu */
+  font-size: 4rem;
+}
+
+.delay {
+  animation-delay: 4s; /* Opóźnienie o 4 sekundy po pierwszej animacji */
+  animation: typing 4s steps(20) 1, blink 0.5s step-end infinite;
+  display: inline-block;
+  overflow: hidden;
+  border-right: 2px solid white;
+  white-space: nowrap;
+  color: white;
+}
+
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+
+
+
+.parallax {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  width: 100%; /* Upewnij się, że sekcja zajmuje całą szerokość */
+  background: var(--fifth-color); /* Ciemne tło dla kontrastu */
+}
+
+
+
+
 /* CART SECTION */
 
 .cart-title {
@@ -278,6 +325,7 @@ mark {
     font-size: 3rem;
     font-weight: 600;
     margin-top: 1.5rem;
+    color: #000;
 }
 
 .cart-box {
@@ -303,11 +351,13 @@ mark {
 .cart-product-title {
     font-size: 1.5rem;
     text-transform: uppercase;
+    color: #000; 
 }
 
 .cart-price {
     font-size: 1.7rem;
     font-weight: 500;
+    color: var(--main-color); /* Akcentowy kolor dla ceny */
 }
 
 .cart-quantity {
@@ -332,16 +382,18 @@ mark {
     display: flex;
     justify-content: flex-end;
     margin-top: 1.5rem;
-    border-top: 1px solid var(--bg);
+    border-top: 1px solid #000; /* Czarna linia */
 }
 
 .total-title {
     font-size: 2rem;
+    color: #000;
 }
 
 .total-price {
     font-size: 2rem;
     margin-left: 0.5rem;
+    color: var(--main-color); /* Akcentowy kolor dla ceny całkowitej */
 }
 
 .btn-buy {
@@ -352,14 +404,16 @@ mark {
     justify-content: center;
     padding: 1rem 3rem;
     font-size: 1.7rem;
-    color: #fff;
+    color: #fff; /* Tekst zawsze biały */
     background-color: var(--main-color);
     cursor: pointer;
 }
 
 .btn-buy:hover {
     letter-spacing: .2rem;
+    background-color: var(--second-color); /* Lekko ciemniejszy akcent */
 }
+
 
 
 /* HERO SECTION */
@@ -401,7 +455,7 @@ mark {
     display: inline-block;
     padding: 1rem 2rem;
     font-size: 1.6rem;
-    color: #fff;
+    color: var(--text-color); /* Dynamiczny kolor zależny od motywu */
     background: #e85d04;
     text-decoration: none;
     border-radius: 5px;
@@ -420,7 +474,7 @@ mark {
 
 .heading {
     text-align: center;
-    color: #fff;
+    color: var(--text-color); /* Dynamiczny kolor zależny od motywu */
     text-transform: uppercase;
     padding-bottom: 50px;
     font-size: 4rem;
@@ -454,7 +508,7 @@ mark {
 
 .about .row .content h3 {
     font-size: 3rem;
-    color: #fff;
+    color: var(--text-color); /* Dynamiczny kolor zależny od motywu */
 }
 
 .about .row .content p {
@@ -505,7 +559,7 @@ mark {
     background-color: #333;
     border: none;
     border-radius: 5px;
-    color: #fff;
+    color: var(--text-color); /* Dynamiczny kolor zależny od motywu */
     padding: 8px 15px;
     transition: background-color 0.3s;
 }
@@ -573,7 +627,7 @@ mark {
 /* Ulepszenia przycisku */
 .menu .box-container .box .btn {
     background-color: var(--main-color);
-    color: #fff;
+    color: var(--text-color); /* Dynamiczny kolor zależny od motywu */
     padding: 0.5rem 1.5rem;
     border-radius: 5px;
     cursor: pointer;
@@ -620,7 +674,7 @@ mark {
 .blogs .box-container .box .title {
     font-size: 2.5rem;
     line-height: 1.5;
-    color: #fff;
+    color: var(--text-color); /* Dynamiczny kolor zależny od motywu */
 }
 
 .blogs .box-container .box .content .title:hover {
@@ -674,7 +728,7 @@ mark {
 .review .box-container .box h3 {
     padding: 1rem 0;
     font-size: 2rem;
-    color: #fff;
+    color: var(--text-color); /* Dynamiczny kolor zależny od motywu */
 }
 
 .review .box-container .box .stars i {
@@ -712,7 +766,7 @@ mark {
 .contact .row form h3 {
     text-transform: uppercase;
     font-size: 3.5rem;
-    color: #fff;
+    color: var(--text-color); /* Dynamiczny kolor zależny od motywu */
 }
 
 .contact .row form .inputBox {
@@ -725,7 +779,7 @@ mark {
 }
 
 .contact .row form .inputBox span {
-    color: #fff;
+    color: var(--text-color); /* Dynamiczny kolor zależny od motywu */
     font-size: 2rem;
     padding-left: 2rem;
 }
@@ -734,7 +788,7 @@ mark {
     width: 100%;
     padding: 2rem;
     font-size: 1.7rem;
-    color: #fff;
+    color: var(--text-color); /* Dynamiczny kolor zależny od motywu */
     text-transform: none;
     background: none;
 }
@@ -744,12 +798,14 @@ mark {
     height: 200px;
     padding: 2rem;
     font-size: 1.7rem;
-    color: #fff;
+    color: var(--text-color); /* Dynamiczny kolor zależny od motywu */
     text-transform: none;
     background: none;
 }
 
 /* FOOTER SECTION */
+
+
 
 
 .footer {
@@ -832,13 +888,13 @@ mark {
     width: 100%;
     border-radius: 2.5rem;
     padding: 1.8rem;
-    color: #fff;
+    padding-right: 50px; /* Dodatkowy padding, aby zostawić miejsce na strzałkę */
+    color: var(--text-color); /* Dynamiczny kolor zależny od motywu */
     background-color: var(--main-color);
-    padding-right: 30px;
-}  
+}
 
 .newsletter::placeholder {
-    color: #bdbdbd;
+    color: #bdbdbd; /* Kolor placeholdera */
 }
 
 .footer .input-wrapper {
@@ -848,16 +904,18 @@ mark {
 .fas.fa-paper-plane {
     position: absolute;
     top: 50%;
-    right: 20px;
+    right: 20px; /* Dostosuj odległość od prawej krawędzi */
     transform: translateY(-50%);
-    color: #ececec;
+    color: #ececec; /* Kolor strzałki */
     font-size: 1.8rem;
     cursor: pointer;
+    padding: 0; /* Usuń dodatkowe wypełnienie, które mogło przesunąć przycisk */
+    line-height: 1; /* Wyrównaj wysokość tekstu wewnątrz przycisku */
 }
 
 .footer .credit {   
     font-size: 2rem;
-    color: #fff;
+    color: var(--text-color); /* Dynamiczny kolor zależny od motywu */
     font-weight: lighter;
     margin-top: 30px;
     padding: 1rem;
@@ -955,6 +1013,34 @@ mark {
 }
 
 
+#paper-plane-icon {
+    background: none;
+    border: none;
+    color: #fff; /* Kolor strzałki */
+    cursor: pointer;
+    font-size: 1.5rem;
+}
 
 
+
+.cart-counter {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    visibility: hidden; /* Ukryj licznik, gdy wartość wynosi 0 */
+}
+
+#cart-btn {
+    position: relative; /* Aby licznik był pozycjonowany względem koszyka */
+}
 
